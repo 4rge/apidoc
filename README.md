@@ -7,9 +7,7 @@ The API Documentation Generator is a simple web-based tool designed to facilitat
 ## Features
 
 - **Dynamic Input Fields**: Users can select the HTTP method, specify the endpoint URL, provide descriptions, request parameters, and response formats.
-- **Toggle Between Sections**: Users can switch between the Endpoints Documentation and the Authentication Documentation sections using a toggle button.
 - **Generated Documentation Display**: Generated API and Authentication documentation is shown in real-time in a structured format.
-- **Copy to Clipboard**: Users can easily copy the generated documentation to their clipboard for quick usage.
 - **Download Options**: Users can download the generated documentation as Markdown files (`API_Documentation.md` and `Authentication_Documentation.md`).
 
 ## Usage
@@ -31,10 +29,6 @@ The API Documentation Generator is a simple web-based tool designed to facilitat
 
 4. **Generate Authentication Docs**:
    - Click on the "Generate Auth Docs" button to create the authentication documentation.
-
-5. **Copy or Download Documentation**:
-   - Use the "Copy to Clipboard" button to copy the generated documentation.
-   - Click on the respective download buttons to download the documentation files.
 
 ## Installation
 
