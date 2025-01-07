@@ -98,6 +98,14 @@
         .delete-button:hover, .edit-button:hover {
             background-color: #c82333;
         }
+
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
@@ -150,15 +158,6 @@
             </tr>
         </tfoot>
     </table>
-
-    <h3>Generated API Documentation:</h3>
-    <pre id="output-api-docs"></pre>
-
-    <div style="display: flex; justify-content: space-around; width: 100%;">
-        <button onclick="generateApiDocs()">Generate Docs</button>
-        <button onclick="copyToClipboard('output-api-docs')">Copy to Clipboard</button>
-        <button onclick="downloadApiDocs()">Download Docs</button>
-    </div>
 </div>
 
 <!-- Authentication Documentation Section -->
@@ -166,14 +165,19 @@
 <div id="auth-section" class="section">
     <textarea id="auth-description" rows="4" placeholder="Describe the authentication method here."></textarea>
     <textarea id="auth-example" rows="4" placeholder="Show an example of authentication request."></textarea>
+</div>
+
+<!-- Documentation Output and Action Buttons Section -->
+<div id="output-section">
+    <h3>Generated API Documentation:</h3>
+    <pre id="output-api-docs"></pre>
 
     <h3>Generated Authentication Documentation:</h3>
     <pre id="output-auth-docs"></pre>
 
-    <div style="display: flex; justify-content: space-around; width: 100%;">
-        <button onclick="generateAuthDocs()">Generate Auth Docs</button>
-        <button onclick="copyToClipboard('output-auth-docs')">Copy to Clipboard</button>
-        <button onclick="downloadAuthDocs()">Download Auth Docs</button>
+    <div class="button-container">
+        <button onclick="generateDocs()">Generate Docs</button>
+        <button onclick="downloadDocs()">Download Docs</button>
     </div>
 </div>
 
@@ -241,7 +245,7 @@
         document.getElementById('response-format').value = '';
     }
 
-    function generateApiDocs() {
+    function generateDocs() {
         const apiDocs = endpoints.map(endpoint => 
             `### ${endpoint.method} ${endpoint.url}\n\n` +
             `**Description:** ${endpoint.description}\n\n` +
@@ -249,10 +253,6 @@
             `**Response Format:** ${endpoint.response}\n`
         ).join('\n');
 
-        document.getElementById('output-api-docs').innerText = apiDocs;
-    }
-
-    function generateAuthDocs() {
         const description = document.getElementById('auth-description').value;
         const example = document.getElementById('auth-example').value;
 
@@ -260,21 +260,11 @@
             `**Description:** ${description}\n\n` +
             `**Example:** ${example}\n`;
 
+        document.getElementById('output-api-docs').innerText = apiDocs;
         document.getElementById('output-auth-docs').innerText = authDoc;
     }
 
-    function copyToClipboard(outputId) {
-        const output = document.getElementById(outputId);
-        const textarea = document.createElement('textarea');
-        textarea.value = output.innerText;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        alert('Copied to clipboard!');
-    }
-
-    function downloadApiDocs() {
+    function downloadDocs() {
         const apiDocs = endpoints.map(endpoint => 
             `### ${endpoint.method} ${endpoint.url}\n\n` +
             `**Description:** ${endpoint.description}\n\n` +
@@ -282,30 +272,20 @@
             `**Response Format:** ${endpoint.response}\n`
         ).join('\n');
 
-        const blob = new Blob([apiDocs], { type: 'text/markdown' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'API_Documentation.md';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
-
-    function downloadAuthDocs() {
-        const description = document.getElementById('auth-description').value;
-        const example = document.getElementById('auth-example').value;
+        const authDescription = document.getElementById('auth-description').value;
+        const authExample = document.getElementById('auth-example').value;
 
         const authDoc = `### Authentication\n\n` +
-            `**Description:** ${description}\n\n` +
-            `**Example:** ${example}\n`;
+            `**Description:** ${authDescription}\n\n` +
+            `**Example:** ${authExample}\n`;
 
-        const blob = new Blob([authDoc], { type: 'text/markdown' });
+        const combinedDocs = apiDocs + '\n\n' + authDoc;
+
+        const blob = new Blob([combinedDocs], { type: 'text/markdown' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'Authentication_Documentation.md';
+        a.download = 'API_and_Authentication_Documentation.md';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
